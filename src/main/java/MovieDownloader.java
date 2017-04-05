@@ -28,20 +28,22 @@ public class MovieDownloader {
 			return null;
 		}
 
-		HttpURLConnection urlConnection = null;
-		BufferedReader reader = null;
+		HttpURLConnection urlConnection = null;		// to connect with support for HTTP-specific features	 
+		BufferedReader reader = null;				
 
 		String[] movies = null;
 
+		// read in data from the URL to search movie and return search result
 		try {
 
 			URL url = new URL(urlString);
 
-			urlConnection = (HttpURLConnection) url.openConnection();
+
+			urlConnection = (HttpURLConnection) url.openConnection();		// sets connection
 			urlConnection.setRequestMethod("GET");
 			urlConnection.connect();
 
-			InputStream inputStream = urlConnection.getInputStream();
+			InputStream inputStream = urlConnection.getInputStream();		// read in data
 			StringBuffer buffer = new StringBuffer();
 			if (inputStream == null) {
 				return null;
@@ -54,9 +56,11 @@ public class MovieDownloader {
 				line = reader.readLine();
 			}
 
+			// when not found anything
 			if (buffer.length() == 0) {
 				return null;
 			}
+
 			String results = buffer.toString();
 			results = results.replace("{\"Search\":[","");
 			results = results.replace("]}","");
@@ -67,6 +71,7 @@ public class MovieDownloader {
 		catch (IOException e) {
 			return null;
 		} 
+
 		finally {
 			if (urlConnection != null) {
 				urlConnection.disconnect();
